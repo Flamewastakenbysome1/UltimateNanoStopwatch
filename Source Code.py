@@ -12,7 +12,7 @@ from PyQt5.QtGui import QFont, QPalette, QColor
 from PyQt5.QtMultimedia import QSoundEffect
 from mpmath import mp, mpf
 
-mp.dps = 80  # Keep this
+mp.dps = 80  
 
 PLANCK_TIME = mpf('5.391247e-44')
 YOCTOSECOND = mpf('1e-24')
@@ -38,7 +38,7 @@ THEMES = {
 class SettingsDialog(QDialog):
     def __init__(self, parent, settings):
         super().__init__(parent)
-        # THEME COLORS
+
         if settings['theme'] == "Hacker":
             fg = "#39ff14"
             bg = "#181a1b"
@@ -88,7 +88,7 @@ class SettingsDialog(QDialog):
         # Font size
         self.fontsize_combo = QComboBox()
         self.fontsize_combo.addItems([
-            "SUPER SMALL (Planck mode)",  # ONLY use for Planck time!
+            "SUPER SMALL (Planck mode)", 
             "Pretty Small",
             "Small",
             "Medium",
@@ -231,7 +231,6 @@ class NanoStopwatch(QWidget):
         self.set_always_on_top(self.settings['always_on_top'])
 
     def build_buttons(self):
-        # Remove previous button layout if it exists
         try:
             if hasattr(self, 'btn_layout'):
                 QWidget().setLayout(self.btn_layout)
@@ -398,10 +397,8 @@ class NanoStopwatch(QWidget):
             self.label.setStyleSheet(f"color: {THEMES[self.settings['theme']]['fg']}; background-color: transparent; border-radius: 8px;")
             self.setWindowOpacity(self.settings['opacity'])
             self.set_always_on_top(self.settings['always_on_top'])
-            # Remove old layout and rebuild buttons
             self.clear_button_layout()
             self.build_buttons()
-            # Remove previous btn_layout (the second item in main_layout)
             old_layout_item = self.main_layout.itemAt(1)
             if old_layout_item is not None:
                 old_layout = old_layout_item.layout()
@@ -431,7 +428,7 @@ class NanoStopwatch(QWidget):
 
     def set_always_on_top(self, enabled):
         self.setWindowFlag(Qt.WindowStaysOnTopHint, enabled)
-        self.show()  # Necessary to apply the flag
+        self.show()  # Necessary to apply the flag :P
 
     def make_time_str(self, elapsed):
         hours = elapsed // 3_600_000_000_000
@@ -453,7 +450,7 @@ class NanoStopwatch(QWidget):
             basic = f"{hours:02}:{minutes:02}:{seconds:02}." + " ".join(units)
         elif self.settings['display_format'] == "Digital":
             basic = f"{hours:02}:{minutes:02}:{seconds:02}:" + ":".join(units)
-        else: # Scientific
+        else: # Scientific btw
             basic = f"{hours:02}h {minutes:02}m {seconds:02}s"
             if self.settings['show_ms']:
                 basic += f" {ms}ms"
@@ -476,7 +473,7 @@ class NanoStopwatch(QWidget):
         yocto = int(elapsed_s / YOCTOSECOND)
         planck = int(elapsed_s / PLANCK_TIME)
 
-        # Format as crazy digits
+        # Format as crazy digits D:
         return (f"{basic} |"
                 f" {pico}p"
                 f" {femto}f"
